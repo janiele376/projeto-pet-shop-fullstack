@@ -1,7 +1,6 @@
 /* Estilos para o container principal e overlay */
 .app-container {
   position: relative;
-  background: url('../../assets/imagens/Body.png') no-repeat center;
   background-size: cover;
   min-height: 100vh;
   padding: 4rem 1rem;
@@ -36,9 +35,9 @@
 
 .h2produtos {
   display: inline-block;
-  background-color: black;
+  background-color: #bf7515;
   color: white;
-  border: 2px solid white;
+  border: 2px solid wgb(146, 75, 4)hite;
   padding: 10px 20px;
   border-radius: 8px;
   margin: 40px auto 20px;

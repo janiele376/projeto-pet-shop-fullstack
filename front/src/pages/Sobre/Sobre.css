@@ -1,7 +1,6 @@
 /* Seção principal */
 #main {
   position: relative;
-  background: url('../../assets/imagens/Body.png') no-repeat center;
   background-size: cover;
   color: #F9FAFB;
   min-height: 100vh;
@@ -19,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(139, 94, 60, 0.75); /* caramelo translúcido */
+  background-color: rgba(255, 165, 82, 0.5); /* caramelo translúcido */
   z-index: 1;
 }
 
@@ -40,7 +39,7 @@
 /* Título */
 #h1 {
   font-size: 2.8rem;
-  font-family: 'Brush Script MT', cursive;
+  font-family: 'georgia';
   color: #FFA552;
   text-align: center;
   margin-bottom: 1.5rem;
@@ -50,7 +49,7 @@
 .about p {
   font-size: 1.3rem;
   font-family: 'Georgia', serif;
-  color: #FFA552 !important;
+  color: #060606 !important;
   line-height: 1.7;
   margin-bottom: 1.2rem;
    text-shadow: none; /* remove a sombra */
@@ -86,7 +85,7 @@
 .galery figcaption {
   font-size: 1rem;
   margin-top: 0.5rem;
-  color: #5d4037; /* marrom médio */
+  color: #0a0a0a; /* marrom médio */
 }
 
 /* Modal de imagem */

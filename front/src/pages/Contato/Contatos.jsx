@@ -14,10 +14,9 @@ function Contatos() {
         <div className="order-box">
           <article className="boxC post">
             <header>
-              <h1>🐾 Nos encontre através de: 🐾</h1>
+              <h2> Nos encontre através de: </h2>
             </header>
-
-            <div className="social-icons">
+              <div className="social-icons">
               <a href="#" className="icon">
                 <FaFacebookF />
               </a>
@@ -34,26 +33,22 @@ function Contatos() {
 
             <ul className="contact">
               <li>
-                <h3>Endereço</h3>
+               
                 <p>
-                  Rua da sorte 002, 00102-003
+                 Endereço:Rua da sorte 002, 00102-003
                   <br />
-                  Bairro Papicu <br />
-                  Fortaleza - CE
+                  Bairro Papicu  Fortaleza - Ce 
+                  <br />
+                <p>Contato: (85) 3200-0001 / (85) 3100-0002</p>
+                  Email
+                  <a Email href="mailto:contato@pet.com.br"> contato@pet.com.br</a>
+                 </p>
+                <p>Horário de Atendimento : Segunda a Sexta: 8h às 18h e Sábado: 8h às 12h
                 </p>
               </li>
-              <li>
-                <h3>Email</h3>
-                <p>
-                  <a href="mailto:contato@pet.com.br">contato@pet.com.br</a>
-                </p>
-              </li>
-              <li>
-                <h3>Contato</h3>
-                <p>(85) 3200-0001 / (85) 3100-0002</p>
-              </li>
+              
             </ul>
-          </article>
+          </article>  
         </div>
       </div>
     </section>

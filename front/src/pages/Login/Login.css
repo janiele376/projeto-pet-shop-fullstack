@@ -1,8 +1,7 @@
 .login-container {
   position: relative; /* necessário para posicionar o ::before dentro */
   height: 100vh;
-  background-color: #b38a65; /* cor base marrom clara */
-  background-image: url('../../assets/imagens/Body.png');
+  background-color: rgba(255, 165, 82, 0.5); /* cor base marrom clara */
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -18,7 +17,7 @@
   content: '';
   position: absolute;
   inset: 0; /* top:0; right:0; bottom:0; left:0 */
-  background-color: rgba(179, 138, 101, 0.75); /* marrom clara translúcida */
+  background-color: rgba(255, 165, 82, 0.5); /* marrom clara translúcida */
   z-index: 0;
 }
 
@@ -46,7 +45,7 @@
 .login-box h2 {
   margin-bottom: 1.5rem;
   color: #FFA552;
-  font-family: 'Brush Script MT', cursive;
+  font-family: 'Georgia';
 }
 
 /* Campos de entrada */

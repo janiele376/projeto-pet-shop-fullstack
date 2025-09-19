@@ -1,6 +1,5 @@
 .contato-section {
   position: relative;
-  background: url('../../assets/imagens/Body.png') no-repeat center;
   background-size: cover;
   min-height: 100vh;
   padding: 4rem 1rem;
@@ -13,7 +12,9 @@
 }
 
 .contato-section * {
+  
   color: #FFA552 !important;
+  font-family: 'Georgia';
 }
 
 /* Container interno */
@@ -31,9 +32,16 @@
 }
 
 /* Títulos */
+  contato-section h1{
+  font-size: 2.8rem;
+  font-family: 'Georgia';
+  margin-bottom: 1.5rem;
+  text-shadow: none;
+  color: #FFA552 !important;
+}
 .contato-section h2 {
   font-size: 2.8rem;
-  font-family: 'Brush Script MT', cursive;
+  font-family: 'Georgia';
   margin-bottom: 1.5rem;
   text-shadow: none;
   color: #FFA552 !important;
@@ -41,7 +49,7 @@
 
 .contato-section h3 {
   font-size: 1.5rem;
-  font-family: 'Georgia', serif;
+  font-family: 'Georgia';
   margin-top: 1.5rem;
   text-shadow: none;
   color: #FFA552 !important;
@@ -49,7 +57,7 @@
 
 /* Parágrafos */
 .contato-section p {
-  font-family: 'Georgia', seif;
+  font-family: 'Georgia';
   font-size: 1.3rem;
   line-height: 1.7;
   margin-bottom: 1.2rem;
@@ -123,7 +131,7 @@
 }
 
 .contato-section .icon:hover {
-  background-color: #FFA552;        /* fundo laranja vibrante */
+  background-color: #efece9;        /* fundo laranja vibrante */
   color: #3e2723 !important;        /* texto escuro */
   box-shadow: 0 6px 15px rgba(255, 165, 82, 0.7); /* sombra mais intensa */
   transform: scale(1.1);            /* leve zoom ao passar o mouse */

@@ -38,7 +38,7 @@ function Produtos() {
     <div className="app-container">
       <section className="sectionprodutos">
         <h2 align="center" className="h2produtos">
-          🐾 Nossos Produtos
+          Nossos Produtos
         </h2>
 
         <div className="filtros-container">

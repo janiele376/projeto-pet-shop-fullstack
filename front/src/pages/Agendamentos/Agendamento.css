@@ -1,8 +1,6 @@
 .order-container {
   position: relative;
-background: url('../../assets/imagens/Body.png') no-repeat center;
-
-  background-size: cover;
+background-size: cover;
   color: #F9FAFB;
   min-height: 100vh;
   padding: 4rem 1rem;
@@ -15,10 +13,10 @@ background: url('../../assets/imagens/Body.png') no-repeat center;
 }
 .order-box {
   position: relative;
-  background-color: #ffffff; /* Fundo branco */
+  background-color: rgba(255, 165, 82, 0.5); /* Fundo branco */
   padding: 2rem;
   border-radius: 16px;
-  border: 2px solid #FFA552; /* borda caramelo */
+  border: 2px solid rgba(255, 165, 82, 0.5); /* borda caramelo */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(3px);
   max-width: 900px;
@@ -36,7 +34,7 @@ background: url('../../assets/imagens/Body.png') no-repeat center;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(139, 94, 60, 0.75); /* marrom caramelo translúcido */
+  background-color: rgba(255, 165, 82, 0.5); /* marrom caramelo translúcido */
   z-index: 0;
 }
 
@@ -47,7 +45,7 @@ background: url('../../assets/imagens/Body.png') no-repeat center;
 
 .order-container h2 {
   font-size: 3rem;
-  font-family: 'Brush Script MT', cursive;
+  font-family: 'Georgia';
   color: #FFA552;
   margin-bottom: 2rem;
 }
@@ -120,7 +118,7 @@ background: url('../../assets/imagens/Body.png') no-repeat center;
 
 .category-button {
   background-color: #FFA552; /* mesma cor do botão de agendamento */
-  color: #3e2723;
+  color: #080808;
   border: none;
   padding: 0.8rem 1.5rem;
   font-weight: bold;
@@ -173,7 +171,7 @@ button[type="submit"],
 
 button[type="submit"]:hover,
 .btn-success:hover {
-  background-color: #f59e3b;
+  background-color: #694925;
   color: white;
 }
 

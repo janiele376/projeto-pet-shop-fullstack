@@ -6,7 +6,7 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>🐾Entrar🐾</h2>
+        <h2>Entrar</h2>
         <form>
           <input type="email" placeholder="E-mail" required />
           <input type="password" placeholder="Senha" required />
@@ -26,9 +26,9 @@ function Login() {
         </div>
 
         <div className="register-link">
-          <p>
-            Não tem uma conta? <a href="#">Crie uma agora</a>
-          </p>
+          <h6>
+            Não tem uma conta? <a href="#">Criar conta</a>
+          </h6>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ function Inicio() {
         {/* Seção de Agendamentos */}
         <section>
           <header className="major">
-            <h2>🐾Agendamentos🐾</h2>
+            <h2>Agendamentos</h2>
           </header>
           <div className="row">
             <div className="col-4 col-6-medium col-12-small">
@@ -45,7 +45,7 @@ function Inicio() {
         {/* Seção de Produtos */}
         <section>
           <header className="major">
-            <h2>🐾Nossos Produtos🐾</h2>
+            <h2>Nossos Produtos</h2>
           </header>
           <div className="row">
             <div className="col-4 col-6-medium col-12-small">
@@ -104,7 +104,7 @@ function Inicio() {
         {/* Seção de Serviços */}
         <section>
           <header className="major">
-            <h2>🐾Nossos Serviços🐾</h2>
+            <h2>Nossos Serviços</h2>
           </header>
           <div className="row">
             <div className="col-4 col-12-medium">

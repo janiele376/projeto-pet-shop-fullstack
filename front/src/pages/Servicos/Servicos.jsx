@@ -13,39 +13,32 @@ function Servicos() {
           {/* Card maior */}
           <div className="col-8">
             <article className="boxservico">
-              <h1>🐾Nossos Serviços🐾</h1>
-              <img src={pet1} alt="Consultas" className="img-responsive" />
+              <h1>Nossos Serviços</h1>
+              <img src={pet1} alt="Consultas" className="img-responsive"/>
               <header>
-                <p>Cuidado completo e carinho para seu pet!</p>
+                <p>Cuidado completo e carinho para seu pet!
+                  No Pet Shop Feliz, oferecemos um atendimento especializado que
+                vai além da estética.Todos os nossos serviços são pensados para o bem-estar dos
+                animais.</p>
               </header>
-              <p>
-                No Pet Shop Feliz, oferecemos um atendimento especializado que
-                vai além da estética...
-              </p>
-              <p>
-                Todos os nossos serviços são pensados para o bem-estar dos
-                animais e a tranquilidade...
-              </p>
-              <section>
-                <header>
-                  <h3>Outros Serviços</h3>
-                </header>
+          
+                 <section>
+              
                 <p>
                   Além do banho e tosa, oferecemos consultas com veterinários
-                  especializados...
+                  especializados. Temos climatizado, com áreas separadas para gatos e
+                  cachorros.
                 </p>
-                <p>
-                  Nosso espaço é climatizado, com áreas separadas para gatos e
-                  cachorros...
-                </p>
+                
               </section>
               <section>
                 <header>
-                  <h3>Conclusão</h3>
+                  <h3>Nossa missão</h3>
                 </header>
                 <p>
-                  Cuidar do seu pet é a nossa missão. Trabalhamos com
-                  responsabilidade, empatia...
+                  Aqui na pet feliz, cuidar do seu pet é a nosso compromisso. Trabalhamos com
+                  responsabilidade, empatia e amor pelos animais para garantir que
+                  cada visita seja uma experiência positiva.
                 </p>
               </section>
             </article>

@@ -32,7 +32,7 @@ function Header() {
       <Navbar
         variant="dark"
         className="py-2 navbar-search-bar"
-        style={{ backgroundColor: '#8B4513' }}
+        style={{ backgroundColor: '#f0a772ff' }}
       >
         <Container className="justify-content-center">
           <Form
@@ -60,7 +60,7 @@ function Header() {
         expand="lg"
         variant="dark"
         className="navbar-principal"
-        style={{ backgroundColor: '#8B4513' }}
+        style={{ backgroundColor: '#eb995fff' }}
       >
         <Container>
           <Navbar.Brand as={Link} to="/">

@@ -1,31 +1,33 @@
 /* ============================
    Estilo geral da navbar
-============================ */
+   =========================== */
 
 /* Cor de fundo da navbar */
 .navbar {
-  background-color: #8b5e3c !important; /* marrom caramelo */
+  background-color: #9ab0e3 !important; /* marrom caramelo */
 }
 
 /* Estilo do nome/marca na navbar */
 .navbar-brand {
-  color: #FFA552 !important; /* laranja suave */
-  font-family: 'Brush Script MT', cursive;
+  color: #f6f4f2 !important; /* laranja suave */
+  font-family: 'Georgia';
   font-size: 2rem;
 }
 
 /* Efeito hover na marca */
 .navbar-brand:hover {
-  color: white !important;
+  color: rgb(240, 236, 236) !important;
 }
+
+
 
 /* ============================
    Estilo dos links de navegação
-============================ */
+   ============================ */
 
 /* Links do menu de navegação */
 .navbar-nav .nav-link {
-  color: #FFA552 !important; /* laranja suave */
+  color: #f7f5f4 !important; /* laranja suave */
   font-family: 'Georgia', serif;
   font-weight: bold;
   margin-left: 10px;
@@ -40,7 +42,7 @@
 
 /* ============================
    Botão de toggle (menu colapsado)
-============================ */
+  ============================ */
 
 /* Remove a borda do botão hamburguer */
 .navbar-toggler {
@@ -80,7 +82,7 @@
 
 /* Foco no campo de pesquisa */
 .navbar-search-bar .form-control:focus {
-  border-color: #A0522D;       /* borda marrom mais escura */
+  border-color: #FFA552;       /* borda marrom mais escura */
   box-shadow: none;            /* remove brilho padrão */
 }
 
