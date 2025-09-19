@@ -165,7 +165,7 @@ function Agendamento() {
   return (
     <div className="order-container">
       <div className="order-box">
-        <h2>🐾Agendamento de Serviço🐾</h2>
+        <h2>Agendamento de Serviço</h2>
         <form onSubmit={handleSubmit}>
           {/* ... Todos os campos que usam order, setOrder, etc. */}
           <div className="form-group">

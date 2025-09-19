@@ -5,32 +5,30 @@ import { useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
 
 function Login() {
+    // ESTADOS
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    
-    const { login, usuario } = useAuth();
-    
-    const navigate = useNavigate();
     const [erro, setErro] = useState('');
+    
+    // HOOKS
+    const { login, usuario } = useAuth();
+    const navigate = useNavigate();
 
-    // =======================================================
-    // 💡 CORREÇÃO APLICADA: MUDAR O REDIRECIONAMENTO PARA A HOME
-    // =======================================================
+    // EFEITO: Redireciona se o usuário já estiver logado
     useEffect(() => {
-        // Se o objeto 'usuario' existir (ou seja, se o login foi chamado e o estado foi atualizado)
         if (usuario) {
-            // Mude o destino para a HOME (/) ou para a página de agendamentos se for o objetivo principal.
+            // Mude o destino para a HOME (/)
             navigate('/', { replace: true }); 
         }
     }, [usuario, navigate]); 
-    // =======================================================
 
+    // FUNÇÃO DE SUBMISSÃO DO FORMULÁRIO
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErro('');
 
         try {
-            // OBS: Recomendação: Mude 'fetch' para 'axios' aqui para manter a consistência com o AuthContext.
+            // OBS: Mantenha o 'fetch' aqui ou mude para 'api.post' se for o caso do seu AuthContext
             const response = await fetch('http://localhost:3001/usuarios/login', {
                 method: 'POST',
                 headers: {

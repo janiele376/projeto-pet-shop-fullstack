@@ -1,11 +1,25 @@
+/* ------------------------------------- */
+/* Layout Principal e Filtros */
+/* ------------------------------------- */
 
-/* Layout principal (filtros + área de produtos) */
+/* O contêiner principal que define o layout de duas colunas (filtros + produtos) */
 .pagina-produtos {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  overflow-x: hidden;
+  box-sizing: border-box; /* Garante que padding e border sejam incluídos no width/height */
+}
+
+/* Contêiner interno para organizar o layout (anteriormente app-container) */
+.app-container {
   display: grid;
   grid-template-columns: 250px 1fr; /* filtros na esquerda + produtos na direita */
   gap: 20px;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1300px; /* Limita a largura máxima do conteúdo */
 }
 
 /* Filtros laterais */
@@ -35,18 +49,23 @@
   cursor: pointer;
 }
 
+/* ------------------------------------- */
+/* Área de Produtos */
+/* ------------------------------------- */
+
 /* Seção de produtos */
 .sectionprodutos {
-  padding: 40px 0;
+  padding: 0; /* Removendo padding vertical desnecessário */
   text-align: center;
 }
 
 /* Título */
 .h2produtos {
   display: inline-block;
-  background-color: black;
+  background-color: #bf7515;
   color: white;
-  border: 2px solid white;
+  /* Corrigido o erro de sintaxe 'wgb(146, 75, 4)hite' para uma cor sólida ou transparente */
+  border: 2px solid transparent; 
   padding: 10px 20px;
   border-radius: 8px;
   margin: 40px auto 20px;
@@ -99,17 +118,17 @@
 /* Cards de produtos */
 .produto-card {
   position: relative;
-  background-color: #ffffff; /* fundo branco */
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 16px;
-  border: 2px solid #FFA552; /* borda caramelo */
+  border: 2px solid #FFA552; 
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(3px);
   max-width: 220px;
   width: 100%;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  color: #3e2723; /* texto escuro */
+  color: #3e2723;
 }
 
 .produto-card:hover {
@@ -146,7 +165,7 @@
   padding: 8px 15px;
   border: none;
   border-radius: 8px;
-  background-color: #ff6600; /* cor do botão */
+  background-color: #ff6600;
   color: white;
   cursor: pointer;
   font-weight: bold;
@@ -189,38 +208,17 @@
   cursor: not-allowed;
 }
 
-/* Responsividade */
-@media (max-width: 992px) {
-  .pagina-produtos {
-    grid-template-columns: 200px 1fr;
-  }
-}
+/* Botões de Ação (Cadastrar/Editar/Excluir) */
 
-@media (max-width: 768px) {
-  .pagina-produtos {
-    grid-template-columns: 1fr; /* filtros em cima */
-  }
-
-  .filtros {
-    margin-bottom: 20px;
-  }
-
-  .produto-card {
-    width: 90%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-}
-
-/* Container dos botões */
 .botoes-produto {
   display: flex;
-  gap: 10px;               /* Espaço entre os botões */
-  justify-content: center;  /* Centraliza os botões horizontalmente */
-  margin-bottom: 20px;      /* Espaço abaixo dos botões */
+  align-items: center;
+  gap: 10px;
+  justify-content: center; /* Centraliza a linha de botões */
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
 }
 
-/* Botões base */
 .botoes-produto button {
   padding: 10px 20px;
   border: none;
@@ -229,26 +227,6 @@
   font-weight: bold;
   font-size: 1rem;
   transition: all 0.3s ease;
-}
-
-.botoes-produto {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.botoes-produto select {
-  padding: 6px 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.botoes-produto {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
 }
 
 .botoes-produto select {
@@ -261,46 +239,58 @@
 .botao-cadastrar-produto {
   background-color: #4CAF50; /* verde */
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .botao-cadastrar-produto:hover {
   background-color: #45a049;
-  transform: scale(1.1); /* aumenta o botão */
+  transform: scale(1.05);
 }
 
 /* Editar */
 .botao-editar-produto {
   background-color: #FFA500; /* laranja */
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .botao-editar-produto:hover {
   background-color: #e69500;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 /* Excluir */
 .botao-excluir-produto {
   background-color: #f44336; /* vermelho */
   color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .botao-excluir-produto:hover {
   background-color: #d32f2f;
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+
+/* ------------------------------------- */
+/* Responsividade */
+/* ------------------------------------- */
+
+@media (max-width: 992px) {
+  .app-container {
+    grid-template-columns: 200px 1fr;
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr; /* filtros em cima */
+  }
+
+  .filtros {
+    margin-bottom: 20px;
+  }
+
+  .produtos-lista {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 }

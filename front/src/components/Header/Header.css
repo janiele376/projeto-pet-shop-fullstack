@@ -1,31 +1,40 @@
 /* ============================
-   Estilo geral da navbar
-============================ */
+  Estilo geral da navbar de PESQUISA (a barra de cima)
+  =========================== */
+.navbar-search-bar {
+  background-color: #f0a772ff !important; /* Cor de fundo da barra de pesquisa */
+  padding: 0.5rem 1rem;
+}
 
-/* Cor de fundo da navbar */
+/* ============================
+  Estilo geral da navbar PRINCIPAL (a barra de navegação)
+  =========================== */
 .navbar-principal {
-  background-color: #8b5e3c !important; /* marrom caramelo */
+  background-color: #eb995fff !important; /* Cor de fundo da navbar principal */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo do nome/marca na navbar */
 .navbar-principal .navbar-brand {
-  color: #FFA552 !important; /* laranja suave */
-  font-family: 'Brush Script MT', cursive;
+  color: #f6f4f2 !important; /* Cor clara para o texto */
+  font-family: 'Georgia', serif; /* Mantendo o estilo da versão mais nova */
   font-size: 2rem;
 }
 
 /* Efeito hover na marca */
 .navbar-principal .navbar-brand:hover {
-  color: white !important;
+  color: rgb(240, 236, 236) !important;
 }
 
+
+
 /* ============================
-   Estilo dos links de navegação
-============================ */
+  Estilo dos links de navegação
+  ============================ */
 
 /* Links do menu de navegação */
 .navbar-principal .navbar-nav .nav-link {
-  color: #FFA552 !important; /* laranja suave */
+  color: #f7f5f4 !important; /* Cor clara para os links */
   font-family: 'Georgia', serif;
   font-weight: bold;
   margin-left: 10px;
@@ -39,8 +48,8 @@
 }
 
 /* ============================
-   Botão de toggle (menu colapsado)
-============================ */
+  Botão de toggle (menu colapsado)
+  ============================ */
 
 /* Remove a borda do botão hamburguer */
 .navbar-toggler {
@@ -53,12 +62,12 @@
 }
 
 /* ============================
-   Estilo da barra de pesquisa
-============================ */
+  Estilo da barra de pesquisa
+  ============================ */
 
 /* Input e botão da barra de pesquisa */
-.navbar-principal .form-control,
-.navbar-principal .btn {
+.navbar-search-bar .form-control,
+.navbar-search-bar .btn {
   height: 32px;
   font-size: 0.9rem;
   padding: 0.25rem 0.75rem;
@@ -66,45 +75,41 @@
   box-sizing: border-box;
 }
 
-/* Remove espaçamento superior do botão */
-.navbar-principal .btn {
-  margin-top: 0;
-}
-
 /* Estilo do campo de pesquisa */
-.navbar-principal .form-control {
+.navbar-search-bar .form-control {
   border: 2px solid #FFA552;
-  border-radius: 10px;         /* cantos arredondados */
-  outline: none;               /* remove contorno azul */
+  border-radius: 10px;
+  outline: none;
 }
 
 /* Foco no campo de pesquisa */
-.navbar-principal .form-control:focus {
-  border-color: #A0522D;       /* borda marrom mais escura */
-  box-shadow: none;            /* remove brilho padrão */
+.navbar-search-bar .form-control:focus {
+  border-color: #A0522D; 
+  box-shadow: none; 
 }
 
 /* ============================
-   Carrinho e Login
-============================ */
+  Carrinho e Login
+  ============================ */
 
 /* Base para ícones de carrinho e login */
 .cart-link,
 .login-link {
   display: flex;
-  align-items: center;         /* alinha verticalmente */
+  align-items: center;
   justify-content: center;
   margin-left: 10px;
   position: relative;
   color: #FFA552 !important;
+  line-height: 0;
 }
 
 /* Tamanho consistente dos ícones */
 .cart-link svg,
 .login-link svg {
-  width: 1.2em;
-  height: 1.2em;
-  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  display: block;
 }
 
 /* Indicador de quantidade no carrinho */
@@ -127,17 +132,18 @@
 }
 
 /* ============================
-   Responsividade
-============================ */
+  Responsividade
+  ============================ */
 
 @media (max-width: 768px) {
-  /* Quando o menu colapsa, barra de pesquisa e links ficam em coluna */
+  /* Alinha os itens em coluna quando o menu colapsa */
   .navbar-principal .d-flex {
     flex-direction: column;
     width: 100%;
     margin-top: 0.5rem;
   }
 
+  /* Ajusta a barra de pesquisa (na navbar de baixo, se necessário) */
   .navbar-principal .form-control {
     margin-bottom: 0.5rem;
     width: 100%;
@@ -145,24 +151,6 @@
 
   .cart-link,
   .login-link {
-    margin-left: 5px; /* reduz espaço em telas pequenas */
+    margin-left: 5px;
   }
-}
-
-.cart-link,
-.login-link {
-  display: flex;
-  align-items: center;  /* centraliza verticalmente */
-  justify-content: center;
-  margin-left: 10px;
-  position: relative;
-  color: #FFA552 !important;
-  line-height: 0;       /* remove espaço extra dos SVGs */
-}
-
-.cart-link svg,
-.login-link svg {
-  width: 1.5em;         /* mesmo tamanho para ambos */
-  height: 1.5em;
-  display: block;       /* garante que o SVG não tenha espaço extra */
 }

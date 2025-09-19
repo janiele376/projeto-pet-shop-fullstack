@@ -34,16 +34,11 @@ function Sobre() {
       {/* Conteúdo principal */}
       <section id="main">
         <article className="about">
-          <h1 id="h1">🐾 História do Pet Shop Feliz 🐾</h1>
+          <h1 id="h1"> História do Pet Shop Feliz </h1>
           <p>
-            Há 10 anos, nasceu um sonho: criar um lugar onde os animais fossem
-            tratados com carinho de verdade...
+            Desde a sua fundação em 2018, a pet sempre teve seus valores bem definidos: amor pelos animais, qualidade dos produtos e excelência no atendimento. Idealizada por amigos, a empresa nasceu com a missão de ser mais do que um pet shop online – um parceiro de confiança para todos os tutores. Acreditamos que cada pet é único e merece o melhor cuidado, por isso, dedicamos tempo e atenção na seleção de cada item do nosso catálogo. Nossa história é construída sobre a confiança dos nossos clientes e o nosso compromisso contínuo em superar suas expectativas. Olhamos para o futuro com a mesma paixão do início, buscando sempre novas formas de fortalecer o vínculo entre humanos e animais e de contribuir para um mundo pet mais feliz e saudável.
           </p>
-          <p>
-            Tudo começou com um pequeno espaço e uma grande paixão pelos
-            animais...
-          </p>
-
+      
           <div className="galery">
             <figure>
               <img src={petshopImg2} alt="Fachada antiga do Pet Shop Feliz" />
@@ -52,10 +47,6 @@ function Sobre() {
               </figcaption>
             </figure>
           </div>
-
-          <p>O boca a boca fez o Pet Shop Feliz crescer...</p>
-          <p>Hoje, após uma década de história...</p>
-          <p>E seguimos assim, dia após dia...</p>
 
           <div className="galery">
             <figure>

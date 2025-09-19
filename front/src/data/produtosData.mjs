@@ -11,7 +11,7 @@ export const todosOsProdutos = [
     descricao:
       'Ração Super Premium para cães adultos de porte pequeno, sabor frango e salmão.',
     imagem:
-      'https://cobasi.vteximg.com.br/arquivos/ids/1045302-368-368/Racao-Premier-Caes-Adultos-Racas-Pequenas-15-kg-lateral.png?v=638169925513030000',
+      'https://www.zeenow.com.br/live/invoke/website/loaders/image.ts?src=https%3A%2F%2Fd25qvdyh5ydvzo.cloudfront.net%2Fycw5juy2dvf2942n8srkx5p6f9pt&fit=cover&width=528&height=528https://www.zeenow.com.br/live/invoke/website/loaders/image.ts?src=https%3A%2F%2Fd25qvdyh5ydvzo.cloudfront.net%2Fycw5juy2dvf2942n8srkx5p6f9pt&fit=cover&width=528&height=528',
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ export const todosOsProdutos = [
     categoria: 'Ração',
     descricao:
       'Alimento natural e fresco para cães filhotes de raças pequenas e mini.',
-    imagem: 'https://images.petz.com.br/fotos/1674066513022.jpg',
+    imagem: 'https://cobasi.vteximg.com.br/arquivos/ids/1038144-368-368/racao-biofresh-caes-filhotes-racas-pequenas-e-minis-frente.jpg?v=638134685918730000',
   },
   {
     id: 6,
@@ -75,7 +75,7 @@ export const todosOsProdutos = [
     preco: 225.0,
     categoria: 'Ração',
     descricao: 'Formulada com salmão para cães com sensibilidade de pele.',
-    imagem: 'https://images.petz.com.br/fotos/10001320000842_1749058128328.jpg',
+    imagem: 'https://cobasi.vteximg.com.br/arquivos/ids/918372-368-368/Racao-Pro-Plan-Caes-Adultos-Sensitive-Skin_5.jpg?v=638126646186830000',
   },
   {
     id: 9,
@@ -100,7 +100,7 @@ export const todosOsProdutos = [
     categoria: 'Ração',
     descricao:
       'Sabor frango e cereais, sem corantes e aromatizantes artificiais.',
-    imagem: 'https://images.petz.com.br/fotos/10001310000439_1733507049119.jpg',
+    imagem: 'https://cobasi.vteximg.com.br/arquivos/ids/1011381-368-368/ORIGENS-AD-PEQ.-PORTE-7898363314192---7898363314284---7898363314499.jpg?v=637995510593000000',
   },
   {
     id: 12,
@@ -187,7 +187,7 @@ export const todosOsProdutos = [
     descricao:
       'Combate os principais vermes intestinais em cães. Caixa com 4 comprimidos.',
     imagem:
-      'https://tudodebicho.vtexassets.com/arquivos/ids/176004/Vermifugo-Drontal-Plus-Caes-10kg.jpg?v=638392101866400000',
+      'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ0HkNJV1Cb0RsDk25Ipue3JJLOetLNww_20CkzCr5UWMzOgU8y7R9hkL8WNCKBxgy0sGb2am6VaOomeWHFs9T-dxLCSXT4Cty3z9oFiF8wbR4A1SoJAbp8yA',
   },
   {
     id: 22,
@@ -516,7 +516,7 @@ export const todosOsProdutos = [
     descricao:
       'Brinquedo feito de sisal, um material natural que os gatos adoram arranhar, ajudando a proteger seus móveis.',
     imagem:
-      'https://m.media-amazon.com/images/I/51EJV9IsJBL.__AC_SX300_SY300_QL70_ML2_.jpg',
+      'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQBSydAqmVp8Vhd_NPRe9i_66q-TmSWxbn42-1fciHgFgtrysyqNuzY6NvoELK84EDe0iudvn2_-O-A6sqmSTfhT3EznaSN66nd2ZOM60N2X9LlA4Ua193uVQ',
   },
   {
     id: 57,

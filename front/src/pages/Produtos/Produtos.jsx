@@ -141,153 +141,154 @@ function Produtos() {
   
   return (
     <div className="pagina-produtos">
-      <aside className="filtros">
-        <h3>Filtrar por</h3>
+      <div className="app-container">
+        <aside className="filtros">
+          <h3>Filtrar por</h3>
+          <div className="filtro-grupo">
+            <h4>Tipo de Produto</h4>
+            <label><input type="checkbox" /> Ração</label>
+            <label><input type="checkbox" /> Brinquedos</label>
+            <label><input type="checkbox" /> Acessórios</label>
+            <label><input type="checkbox" /> Higiene</label>
+          </div>
 
-        <div className="filtro-grupo">
-          <h4>Tipo de Produto</h4>
-          <label><input type="checkbox" /> Ração</label>
-          <label><input type="checkbox" /> Brinquedos</label>
-          <label><input type="checkbox" /> Acessórios</label>
-          <label><input type="checkbox" /> Higiene</label>
-        </div>
+          <div className="filtro-grupo">
+            <h4>Animal</h4>
+            <label><input type="checkbox" /> Cachorro</label>
+            <label><input type="checkbox" /> Gato</label>
+            <label><input type="checkbox" /> Pássaro</label>
+            <label><input type="checkbox" /> Roedor</label>
+          </div>
 
-        <div className="filtro-grupo">
-          <h4>Animal</h4>
-          <label><input type="checkbox" /> Cachorro</label>
-          <label><input type="checkbox" /> Gato</label>
-          <label><input type="checkbox" /> Pássaro</label>
-          <label><input type="checkbox" /> Roedor</label>
-        </div>
+          <div className="filtro-grupo">
+            <h4>Marca</h4>
+            <label><input type="checkbox" onChange={() => setFiltroMarca('Royal Canin')} /> Royal Canin</label>
+            <label><input type="checkbox" onChange={() => setFiltroMarca('Pedigree')} /> Pedigree</label>
+            <label><input type="checkbox" onChange={() => setFiltroMarca('Whiskas')} /> Whiskas</label>
+          </div>
 
-        <div className="filtro-grupo">
-          <h4>Marca</h4>
-          <label><input type="checkbox" onChange={() => setFiltroMarca('Royal Canin')} /> Royal Canin</label>
-          <label><input type="checkbox" onChange={() => setFiltroMarca('Pedigree')} /> Pedigree</label>
-          <label><input type="checkbox" onChange={() => setFiltroMarca('Whiskas')} /> Whiskas</label>
-        </div>
+          <div className="filtro-grupo">
+            <h4>Preço</h4>
+            <label><input type="checkbox" onChange={() => setFiltroPreco('0-50')} /> Até R$50</label>
+            <label><input type="checkbox" onChange={() => setFiltroPreco('51-100')} /> R$51 - R$100</label>
+            <label><input type="checkbox" onChange={() => setFiltroPreco('101-max')} /> Acima de R$100</label>
+          </div>
+        </aside>
 
-        <div className="filtro-grupo">
-          <h4>Preço</h4>
-          <label><input type="checkbox" onChange={() => setFiltroPreco('0-50')} /> Até R$50</label>
-          <label><input type="checkbox" onChange={() => setFiltroPreco('51-100')} /> R$51 - R$100</label>
-          <label><input type="checkbox" onChange={() => setFiltroPreco('101-max')} /> Acima de R$100</label>
-        </div>
-      </aside>
+        <main className="produtos-area">
+          <section className="sectionprodutos">
+            <h2 align="center" className="h2produtos">
+              🐾 Nossos Produtos
+            </h2>
 
-      <main className="produtos-area">
-        <section className="sectionprodutos">
-          <h2 align="center" className="h2produtos">
-            🐾 Nossos Produtos
-          </h2>
+            {/* VISIBILIDADE: Botoes Cadastrar/Editar/Excluir */}
+            {isVendedor && (
+              <div className="botoes-produto">
+                <button
+                  className="botao-cadastrar-produto"
+                  onClick={() => navigate('/cadastro-produto')}
+                >
+                  Cadastrar Produto
+                </button>
 
-          {/* VISIBILIDADE: Botoes Cadastrar/Editar/Excluir */}
-          {isVendedor && (
-            <div className="botoes-produto">
-              <button
-                className="botao-cadastrar-produto"
-                onClick={() => navigate('/cadastro-produto')}
-              >
-                Cadastrar Produto
-              </button>
+                <select
+                  value={produtoSelecionadoId}
+                  onChange={(e) => setProdutoSelecionadoId(e.target.value)}
+                >
+                  <option value="">Selecione um produto</option>
+                  {produtos.map((produto) => (
+                    <option key={produto.id} value={produto.id}>
+                      {produto.nome}
+                    </option>
+                  ))}
+                </select>
 
+                <button
+                  className="botao-editar-produto"
+                  onClick={() => {
+                    if (produtoSelecionadoId) {
+                      navigate(`/editar-produto/${produtoSelecionadoId}`);
+                    } else {
+                      Swal.fire('Atenção!', 'Selecione um produto primeiro para editar.', 'warning');
+                    }
+                  }}
+                >
+                  Editar Produto
+                </button>
+
+                <button className="botao-excluir-produto" onClick={handleExcluir}>
+                  Excluir Produto
+                </button>
+              </div>
+            )}
+            
+            {/* Pesquisa e ordenação */}
+            <div className="filtros-container">
+              <input
+                type="text"
+                placeholder="Pesquisar produtos..."
+                className="barra-pesquisa"
+                value={termoPesquisa}
+                onChange={(e) => setTermoPesquisa(e.target.value)}
+              />
               <select
-                value={produtoSelecionadoId}
-                onChange={(e) => setProdutoSelecionadoId(e.target.value)}
+                className="dropdown-ordenacao"
+                value={ordenacao}
+                onChange={(e) => setOrdenacao(e.target.value)}
               >
-                <option value="">Selecione um produto</option>
-                {produtos.map((produto) => (
-                  <option key={produto.id} value={produto.id}>
-                    {produto.nome}
-                  </option>
-                ))}
+                <option value="nenhum">Relevância (Padrão)</option>
+                <option value="mais-barato">Preço: Do mais barato</option>
+                <option value="mais-caro">Preço: Do mais caro</option>
               </select>
+            </div>
 
+            {/* LISTA DE PRODUTOS */}
+            <div className="produtos-lista">
+              {produtosPaginaAtual.length > 0 ? (
+                produtosPaginaAtual.map((produto) => (
+                  // 🛑 LÓGICA DE SELEÇÃO: Envolve o componente Produto
+                  <div 
+                      key={produto.id} 
+                      onClick={() => setProdutoSelecionadoId(String(produto.id))} // Seleciona ao clicar
+                      className={String(produto.id) === produtoSelecionadoId ? 'produto-selecionado' : ''} // Adiciona classe 'selecionado'
+                  >
+                      <Produto produto={produto} />
+                  </div>
+                ))
+              ) : (
+                <p className="nenhum-produto-encontrado">
+                  Nenhum produto encontrado com a pesquisa ou filtros aplicados.
+                </p>
+              )}
+            </div>
+
+            {/* Paginação */}
+            <div className="paginacao">
               <button
-                className="botao-editar-produto"
-                onClick={() => {
-                  if (produtoSelecionadoId) {
-                    navigate(`/editar-produto/${produtoSelecionadoId}`);
-                  } else {
-                    Swal.fire('Atenção!', 'Selecione um produto primeiro para editar.', 'warning');
-                  }
-                }}
+                onClick={() => handleChangePage(paginaAtual - 1)}
+                disabled={paginaAtual === 1}
               >
-                Editar Produto
+                Anterior
               </button>
-
-              <button className="botao-excluir-produto" onClick={handleExcluir}>
-                Excluir Produto
+              {numerosPaginas.map((numero) => (
+                <button
+                  key={numero}
+                  onClick={() => handleChangePage(numero)}
+                  className={numero === paginaAtual ? 'ativo' : ''}
+                >
+                  {numero}
+                </button>
+              ))}
+              <button
+                onClick={() => handleChangePage(paginaAtual + 1)}
+                disabled={paginaAtual === totalPaginas}
+              >
+                Próximo
               </button>
             </div>
-          )}
-          
-          {/* Pesquisa e ordenação */}
-          <div className="filtros-container">
-            <input
-              type="text"
-              placeholder="Pesquisar produtos..."
-              className="barra-pesquisa"
-              value={termoPesquisa}
-              onChange={(e) => setTermoPesquisa(e.target.value)}
-            />
-            <select
-              className="dropdown-ordenacao"
-              value={ordenacao}
-              onChange={(e) => setOrdenacao(e.target.value)}
-            >
-              <option value="nenhum">Relevância (Padrão)</option>
-              <option value="mais-barato">Preço: Do mais barato</option>
-              <option value="mais-caro">Preço: Do mais caro</option>
-            </select>
-          </div>
-
-          {/* LISTA DE PRODUTOS */}
-          <div className="produtos-lista">
-            {produtosPaginaAtual.length > 0 ? (
-              produtosPaginaAtual.map((produto) => (
-                // 🛑 LÓGICA DE SELEÇÃO: Envolve o componente Produto
-                <div 
-                    key={produto.id} 
-                    onClick={() => setProdutoSelecionadoId(String(produto.id))} // Seleciona ao clicar
-                    className={String(produto.id) === produtoSelecionadoId ? 'produto-selecionado' : ''} // Adiciona classe 'selecionado'
-                >
-                    <Produto produto={produto} />
-                </div>
-              ))
-            ) : (
-              <p className="nenhum-produto-encontrado">
-                Nenhum produto encontrado com a pesquisa ou filtros aplicados.
-              </p>
-            )}
-          </div>
-
-          {/* Paginação */}
-          <div className="paginacao">
-            <button
-              onClick={() => handleChangePage(paginaAtual - 1)}
-              disabled={paginaAtual === 1}
-            >
-              Anterior
-            </button>
-            {numerosPaginas.map((numero) => (
-              <button
-                key={numero}
-                onClick={() => handleChangePage(numero)}
-                className={numero === paginaAtual ? 'ativo' : ''}
-              >
-                {numero}
-              </button>
-            ))}
-            <button
-              onClick={() => handleChangePage(paginaAtual + 1)}
-              disabled={paginaAtual === totalPaginas}
-            >
-              Próximo
-            </button>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

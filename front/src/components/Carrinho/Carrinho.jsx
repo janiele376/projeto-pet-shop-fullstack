@@ -1,4 +1,3 @@
-// Carrinho.jsx
 import React, { useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -56,13 +55,18 @@ const Carrinho = () => {
     }
 
     try {
-      const response = await fetch('/carrinho/finalizar', {
+      // NOTE: Este endpoint de API precisa ser verificado no backend
+      const response = await fetch('/carrinho/finalizar', { 
         method: 'POST',
         headers: {
           Authorization: `Bearer ${usuario.token}`,
           'Content-Type': 'application/json',
         },
       });
+
+      if (!response.ok) {
+        throw new Error('Falha ao finalizar compra.');
+      }
 
       Swal.fire({
         icon: 'success',
@@ -76,7 +80,7 @@ const Carrinho = () => {
       Swal.fire({
         icon: 'error',
         title: 'Erro na compra',
-        text: error.message,
+        text: error.message || 'Houve um problema ao processar seu pedido.',
       });
     }
   };
@@ -88,6 +92,7 @@ const Carrinho = () => {
   return (
     <div id="carrinho-page">
       <div className="carrinho-container">
+        {/* CONFLITO RESOLVIDO: Mesclando o título amigável e a tag H2 */}
         <h2>🐾 Seu carrinho de compras 🛒</h2>
 
         {cartItems.length === 0 ? (

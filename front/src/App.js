@@ -11,8 +11,8 @@ import Carrinho from './components/Carrinho/Carrinho';
 import Servicos from './pages/Servicos/Servicos';
 import Contatos from './pages/Contato/Contatos';
 import Footer from './components/Footer/Footer';
-import Produto from './pages/Produto/Produto';
-import Historia from './pages/Historia/Historia';
+// Note: 'Produto' aqui geralmente é o detalhe, e não o componente do Produto na lista.
+import Produto from './pages/Produto/Produto'; 
 import Buscar from './pages/Buscar/Buscar';
 import Login from './pages/Login/Login';
 import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
@@ -21,15 +21,24 @@ import EditarProduto from './pages/Produtos/EditarProduto.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage';
 import ProtectedRoute from './pages/Login/ProtectedRoute';
 
+// CORREÇÃO DOS ERROS DE IMPORTAÇÃO: 
+// 1. O caminho deve ser relativo a src, então './context/...'
+import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext'; // Se for o caso, pode precisar ser importado aqui
+
 // IMPORTAÇÕES GLOBAIS
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CartProvider } from './context/CartContext';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// CORREÇÃO DO ERRO DE IMPORTAÇÃO: 
+// 2. O Header.css também foi movido/teve o caminho alterado
+import './components/Header/Header.css'; // O CSS geralmente fica na pasta do componente
+
 function App() {
   return (
+    // Você deve usar o AuthProvider aqui se ele existir!
     <CartProvider>
       <ToastContainer
         position="top-center"
@@ -56,12 +65,12 @@ function App() {
         <Route path="/serviços" element={<Servicos />} />
         <Route path="/contato" element={<Contatos />} />
         <Route path="/sobre" element={<Sobre />} />
-        <Route path="/historia" element={<Historia />} />
         <Route path="/buscar" element={<Buscar />} />
 
         {/* Deixar agendamento e carrinho acessíveis para todos */}
         <Route path="/agendamento" element={<Agendamento />} />
         <Route path="/carrinho" element={<Carrinho />} />
+        <Route path="/produto/:id" element={<Produto />} /> {/* Rota de detalhe de produto */}
 
         {/* ================================================= */}
         {/* GRUPO 2: ROTAS PROTEGIDAS (Só usuários logados) */}
