@@ -8,9 +8,12 @@ function Produto({ produto }) {
 
   const handleAddToCart = async () => {
     try {
-      await addToCart(produto, 1); // produto inteiro
+      // 🛑 CORREÇÃO AQUI: Passar apenas o ID do produto, não o objeto inteiro.
+      await addToCart(produto.id, 1); 
       toast.success(`"${produto.nome}" foi adicionado ao carrinho!`);
     } catch (error) {
+      // É bom exibir o erro real no console para debug
+      console.error("Erro detalhado ao adicionar produto:", error); 
       toast.error(`Erro ao adicionar "${produto.nome}" ao carrinho.`);
     }
   };

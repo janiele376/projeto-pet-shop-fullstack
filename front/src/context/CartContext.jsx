@@ -1,5 +1,4 @@
-// src/context/CartContext.js
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import api from '../services/api';
 import { useAuth } from './AuthContext';
 
@@ -12,11 +11,19 @@ export const CartProvider = ({ children }) => {
 
   // Buscar carrinho
   const fetchCart = useCallback(async () => {
-    if (!usuario) return;
+    // Pega o token diretamente do localStorage ou usa o objeto do usuário
+    const token = localStorage.getItem('token'); 
+    
+    if (!token) {
+        setCartItems([]);
+        return;
+    }
+    
     setLoading(true);
     try {
       const response = await api.get('/carrinho', {
-        headers: { Authorization: `Bearer ${usuario.token}` },
+        // Agora usa o token obtido localmente, garantindo que a requisição seja feita.
+        headers: { Authorization: `Bearer ${token}` }, 
       });
 
       setCartItems(
@@ -36,18 +43,32 @@ export const CartProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [usuario]);
+  }, []); 
+
+  // 🛑 NOVO EFEITO: Carrega o carrinho quando o usuário é carregado pelo AuthContext
+  useEffect(() => {
+      // Se o usuário foi carregado (mesmo que seja null) e não estivermos carregando o AuthContext, tenta buscar.
+      if (usuario !== undefined) { 
+          fetchCart();
+      }
+  }, [usuario, fetchCart]);
+
 
   // Adicionar produto
   const addToCart = async (produtoId, quantidade = 1) => {
-    if (!usuario) return;
+    const token = localStorage.getItem('token');
+    if (!token) return; // Bloqueia se não houver token
+
     try {
       await api.post(
         '/carrinho/adicionar',
         { produtoId, quantidade },
-        { headers: { Authorization: `Bearer ${usuario.token}` } },
+        // Garante que o token está no header
+        { headers: { Authorization: `Bearer ${token}` } }, 
       );
-      await fetchCart();
+      
+      // Chamada para atualizar a lista após a adição no backend
+      await fetchCart(); 
     } catch (error) {
       console.error('Erro ao adicionar produto:', error);
     }
@@ -55,9 +76,11 @@ export const CartProvider = ({ children }) => {
 
   // Remover produto
   const removeFromCart = async (itemId) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
     try {
       await api.delete(`/carrinho/remover/${itemId}`, {
-        headers: { Authorization: `Bearer ${usuario.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       await fetchCart();
     } catch (error) {
@@ -67,9 +90,12 @@ export const CartProvider = ({ children }) => {
 
   // Limpar carrinho
   const clearCart = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
     try {
       await api.delete('/carrinho/limpar', {
-        headers: { Authorization: `Bearer ${usuario.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems([]);
     } catch (error) {

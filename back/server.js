@@ -35,7 +35,7 @@ app.use("/usuarios", usuarioRoutes);
 app.use("/produtos", produtoRoutes);
 app.use("/vendas", vendaRoutes);
 app.use('/agendamentos', agendamentoRoutes);
-app.use('/api/carrinho', carrinhoRoutes);
+app.use('/carrinho', carrinhoRoutes);
 // 🛑 CORREÇÃO AQUI: Usa 'servicosRouter' no lugar de 'servicoRouter'
 app.use('/servicos', servicosRouter); 
 
