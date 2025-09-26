@@ -36,9 +36,7 @@ app.use("/produtos", produtoRoutes);
 app.use("/vendas", vendaRoutes);
 app.use('/agendamentos', agendamentoRoutes);
 app.use('/carrinho', carrinhoRoutes);
-// 🛑 CORREÇÃO AQUI: Usa 'servicosRouter' no lugar de 'servicoRouter'
 app.use('/servicos', servicosRouter); 
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get("/", (req, res) => {

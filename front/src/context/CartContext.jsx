@@ -4,35 +4,59 @@ import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
+const LOCAL_STORAGE_KEY = 'guestCartItems';
+
+// Funções auxiliares para gerenciar o carrinho local
+const getGuestCart = () => {
+  try {
+    const items = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return items ? JSON.parse(items) : [];
+  } catch (error) {
+    console.error("Erro ao ler carrinho do localStorage:", error);
+    return [];
+  }
+};
+
+const saveGuestCart = (items) => {
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(items));
+  } catch (error) {
+    console.error("Erro ao salvar carrinho no localStorage:", error);
+  }
+};
+
+
 export const CartProvider = ({ children }) => {
-  const { usuario } = useAuth();
+  const { usuario, loading: authLoading } = useAuth(); 
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Buscar carrinho
+  // ----------------------------------------------------
+  // FUNÇÃO PRINCIPAL: Buscar carrinho (Backend ou Local)
+  // ----------------------------------------------------
   const fetchCart = useCallback(async () => {
-    // Pega o token diretamente do localStorage ou usa o objeto do usuário
     const token = localStorage.getItem('token'); 
     
-    if (!token) {
-        setCartItems([]);
-        return;
+    // 1. USUÁRIO NÃO LOGADO: Usa o carrinho local
+    if (!token || !usuario) {
+      setCartItems(getGuestCart());
+      return; 
     }
     
+    // 2. USUÁRIO LOGADO: Busca no backend
     setLoading(true);
     try {
       const response = await api.get('/carrinho', {
-        // Agora usa o token obtido localmente, garantindo que a requisição seja feita.
         headers: { Authorization: `Bearer ${token}` }, 
       });
 
       setCartItems(
         Array.isArray(response.data.itens)
           ? response.data.itens.map((item) => ({
-              id: item.id,
+              id: item.id, 
               produtoId: item.produto.id,
               nome: item.produto.nome,
-              preco: item.produto.preco,
+              preco: Number(item.produto.preco) || 0, 
               quantidade: item.quantidade,
               imagem_url: item.produto.imagem_url,
             }))
@@ -40,44 +64,94 @@ export const CartProvider = ({ children }) => {
       );
     } catch (error) {
       console.error('Erro ao carregar carrinho:', error);
+      setCartItems([]);
     } finally {
       setLoading(false);
     }
-  }, []); 
+  }, [usuario]); 
 
-  // 🛑 NOVO EFEITO: Carrega o carrinho quando o usuário é carregado pelo AuthContext
+  // EFEITO: Inicialização e Sincronização após Login
   useEffect(() => {
-      // Se o usuário foi carregado (mesmo que seja null) e não estivermos carregando o AuthContext, tenta buscar.
-      if (usuario !== undefined) { 
-          fetchCart();
-      }
-  }, [usuario, fetchCart]);
+    if (!authLoading) {
+      fetchCart();
+    }
+    if (usuario && !authLoading) {
+        const guestItems = getGuestCart();
+        if (guestItems.length > 0) {
+            fetchCart().then(() => {
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
+            });
+        }
+    }
+  }, [usuario, authLoading, fetchCart]);
 
 
-  // Adicionar produto
-  const addToCart = async (produtoId, quantidade = 1) => {
+  // ----------------------------------------------------
+  // FUNÇÃO PRINCIPAL: Adicionar produto
+  // ----------------------------------------------------
+  const addToCart = useCallback(async (produto, quantidade = 1) => {
     const token = localStorage.getItem('token');
-    if (!token) return; // Bloqueia se não houver token
+    
+    // 1. USUÁRIO NÃO LOGADO: Adiciona no localStorage
+    if (!token || !usuario) {
+      if (!produto || !produto.id) {
+          console.error("Erro: Objeto do produto inválido passado para addToCart.");
+          return;
+      }
 
+      const currentItems = getGuestCart();
+      const existingItem = currentItems.find(item => item.produtoId === produto.id);
+
+      if (existingItem) {
+        existingItem.quantidade = Number(existingItem.quantidade) + Number(quantidade);
+      } else {
+        currentItems.push({
+          id: `guest_${Date.now()}`, 
+          produtoId: produto.id,
+          nome: produto.nome,
+          preco: Number(produto.preco) || 0,
+          quantidade: Number(quantidade) || 1, 
+          imagem_url: produto.imagem_url,
+        });
+      }
+
+      saveGuestCart(currentItems);
+      setCartItems(currentItems);
+      return;
+    }
+    
+    // 2. USUÁRIO LOGADO: Adiciona no backend
     try {
       await api.post(
         '/carrinho/adicionar',
-        { produtoId, quantidade },
-        // Garante que o token está no header
+        { produtoId: produto.id, quantidade }, 
         { headers: { Authorization: `Bearer ${token}` } }, 
       );
       
-      // Chamada para atualizar a lista após a adição no backend
       await fetchCart(); 
     } catch (error) {
       console.error('Erro ao adicionar produto:', error);
     }
-  };
+  }, [usuario, fetchCart]);
+  
+  
+  // ----------------------------------------------------
+  // OUTRAS FUNÇÕES
+  // ----------------------------------------------------
 
-  // Remover produto
-  const removeFromCart = async (itemId) => {
+  const removeFromCart = useCallback(async (itemId) => {
     const token = localStorage.getItem('token');
-    if (!token) return;
+    
+    // 1. NÃO LOGADO: Remove do localStorage
+    if (!token || !usuario) {
+        let currentItems = getGuestCart();
+        currentItems = currentItems.filter(item => item.id !== itemId);
+        saveGuestCart(currentItems);
+        setCartItems(currentItems);
+        return;
+    }
+    
+    // 2. LOGADO: Remove do backend
     try {
       await api.delete(`/carrinho/remover/${itemId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -86,22 +160,36 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       console.error('Erro ao remover produto:', error);
     }
-  };
+  }, [usuario, fetchCart]);
 
-  // Limpar carrinho
-  const clearCart = async () => {
+  const clearCart = useCallback(async () => {
     const token = localStorage.getItem('token');
-    if (!token) return;
+    
+    // 1. NÃO LOGADO: Limpa o localStorage
+    if (!token || !usuario) {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        setCartItems([]);
+        return;
+    }
 
+    // 2. LOGADO: Limpa o backend
     try {
-      await api.delete('/carrinho/limpar', {
+      // 🛑 CORREÇÃO FINAL PARA O 404: 
+      // Usamos POST /carrinho/limpar, que é comum para rotas de ação
+      await api.post('/carrinho/limpar', null, { 
         headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems([]);
     } catch (error) {
       console.error('Erro ao limpar carrinho:', error);
     }
-  };
+  }, [usuario]);
+  
+  // Calcula o total com segurança contra NaN
+  const cartTotal = cartItems.reduce((acc, item) => 
+      acc + (Number(item.preco) || 0) * (Number(item.quantidade) || 0)
+  , 0);
+
 
   return (
     <CartContext.Provider
@@ -112,6 +200,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         clearCart,
+        cartTotal,
       }}
     >
       {children}
@@ -119,5 +208,4 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// Hook para usar o contexto
 export const useCart = () => useContext(CartContext);
