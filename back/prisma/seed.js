@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 // 💡 NOTA: Você precisa garantir que 'produtosData' exporta um array de produtos
 // 💡 Se o seu arquivo de produtos não tiver um default export, esta linha pode falhar
-import produtosData from '../../front/src/data/produtosData.js'; 
+import produtosData from '../../front/src/data/produtosData.mjs'; 
 import { Decimal } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient();
