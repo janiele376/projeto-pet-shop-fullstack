@@ -1,96 +1,97 @@
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+// src/context/CartContext.js
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import api from '../services/api';
 import { useAuth } from './AuthContext';
-import api from '../services/api'; 
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { usuario } = useAuth();
-    
-    const API_BASE_PATH = '/api/carrinho'; 
+  const { usuario } = useAuth();
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    // CORREÇÃO CRÍTICA: Envolver fetchCart com useCallback
-    const fetchCart = useCallback(async () => {
-        if (!usuario) {
-            setCartItems([]);
-            setLoading(false);
-            return;
-        }
+  // Buscar carrinho
+  const fetchCart = useCallback(async () => {
+    if (!usuario) return;
+    setLoading(true);
+    try {
+      const response = await api.get('/carrinho', {
+        headers: { Authorization: `Bearer ${usuario.token}` },
+      });
 
-        try {
-            setLoading(true);
-            const response = await api.get(API_BASE_PATH);
-            
-            setCartItems(response.data.itens || []); 
-        } catch (error) {
-            console.error('Erro ao buscar carrinho do backend:', error);
-            if (error.response && (error.response.status === 404 || error.response.status === 400)) {
-                setCartItems([]);
-            } 
-        } finally {
-            setLoading(false);
-        }
-    }, [usuario]); // Dependência: só recria se o usuário mudar
+      setCartItems(
+        Array.isArray(response.data.itens)
+          ? response.data.itens.map((item) => ({
+              id: item.id,
+              produtoId: item.produto.id,
+              nome: item.produto.nome,
+              preco: item.produto.preco,
+              quantidade: item.quantidade,
+              imagem_url: item.produto.imagem_url,
+            }))
+          : [],
+      );
+    } catch (error) {
+      console.error('Erro ao carregar carrinho:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [usuario]);
 
-    // Agora o useEffect depende da versão estável de fetchCart
-    useEffect(() => {
-        fetchCart();
-    }, [fetchCart]); 
+  // Adicionar produto
+  const addToCart = async (produtoId, quantidade = 1) => {
+    if (!usuario) return;
+    try {
+      await api.post(
+        '/carrinho/adicionar',
+        { produtoId, quantidade },
+        { headers: { Authorization: `Bearer ${usuario.token}` } },
+      );
+      await fetchCart();
+    } catch (error) {
+      console.error('Erro ao adicionar produto:', error);
+    }
+  };
 
-    
-    const addToCart = async (productId, quantity = 1) => {
-        if (!usuario) {
-            alert('Você precisa estar logado para adicionar itens ao carrinho!');
-            return;
-        }
-        
-        try {
-            const response = await api.post(`${API_BASE_PATH}/adicionar`, {
-                produtoId: productId,
-                quantidade: quantity,
-            });
-            
-            if (response.status === 201 || response.status === 200) {
-                await fetchCart(); 
-                alert(`Produto adicionado ao carrinho!`);
-            }
+  // Remover produto
+  const removeFromCart = async (itemId) => {
+    try {
+      await api.delete(`/carrinho/remover/${itemId}`, {
+        headers: { Authorization: `Bearer ${usuario.token}` },
+      });
+      await fetchCart();
+    } catch (error) {
+      console.error('Erro ao remover produto:', error);
+    }
+  };
 
-        } catch (error) {
-            console.error('Falha ao adicionar item via API:', error);
-            const errorMessage = error.response?.data?.message || error.response?.data?.erro || 'Erro desconhecido ao adicionar.';
-            alert(`Falha ao adicionar: ${errorMessage}`);
-        }
-    };
-    
-    const removeFromCart = async (itemId) => {
-        if (!usuario) return;
-        try {
-            await api.delete(`${API_BASE_PATH}/remover/${itemId}`);
-            await fetchCart(); 
-        } catch (error) {
-            console.error('Falha ao remover item:', error);
-            alert('Não foi possível remover o item.');
-        }
-    };
+  // Limpar carrinho
+  const clearCart = async () => {
+    try {
+      await api.delete('/carrinho/limpar', {
+        headers: { Authorization: `Bearer ${usuario.token}` },
+      });
+      setCartItems([]);
+    } catch (error) {
+      console.error('Erro ao limpar carrinho:', error);
+    }
+  };
 
-    const clearCart = async () => {
-        await fetchCart();
-    };
-    
-    const value = {
+  return (
+    <CartContext.Provider
+      value={{
         cartItems,
         loading,
+        fetchCart,
         addToCart,
         removeFromCart,
         clearCart,
-        fetchCart 
-    };
-
-    return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
-export const useCart = () => {
-    return useContext(CartContext);
-};
+// Hook para usar o contexto
+export const useCart = () => useContext(CartContext);

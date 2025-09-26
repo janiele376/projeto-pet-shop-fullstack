@@ -19,12 +19,11 @@ model Usuario {
   data_criacao       DateTime @default(now())
   data_atualizacao   DateTime @default(now()) @updatedAt
 
-
   produtos_vendidos  Produto[]     @relation("VendedorProdutos")
   vendas_realizadas  Venda[]       @relation("VendedorVendas")
   compras_realizadas Venda[]       @relation("ClienteVendas")
   agendamentos       Agendamento[]
-  carrinho           Carrinho?     @relation("ClienteCarrinho") 
+  carrinho           Carrinho?     @relation("ClienteCarrinho")
 
   @@map("usuarios")
 }
@@ -42,10 +41,9 @@ model Produto {
   data_criacao       DateTime @default(now())
   data_atualizacao   DateTime @default(now()) @updatedAt
 
-
   vendedor           Usuario      @relation("VendedorProdutos", fields: [vendedor_id], references: [id], onDelete: Cascade)
   itens_venda        ItemVenda[]
-  itens_carrinho     ItemCarrinho[] 
+  itens_carrinho     ItemCarrinho[]
 
   @@map("produtos")
 }
@@ -60,7 +58,6 @@ model Venda {
   forma_pagamento    String?  @db.VarChar(50)
   endereco_entrega   String?
   data_atualizacao   DateTime @default(now()) @updatedAt
-
 
   cliente            Usuario  @relation("ClienteVendas", fields: [cliente_id], references: [id], onDelete: Restrict)
   vendedor           Usuario  @relation("VendedorVendas", fields: [vendedor_id], references: [id], onDelete: Restrict)
@@ -77,7 +74,6 @@ model ItemVenda {
   preco_unitario     Decimal  @db.Decimal(10, 2)
   subtotal           Decimal  @db.Decimal(10, 2)
 
-
   venda              Venda    @relation(fields: [venda_id], references: [id], onDelete: Cascade)
   produto            Produto  @relation(fields: [produto_id], references: [id], onDelete: Restrict)
 
@@ -92,7 +88,6 @@ model Servico {
   preco              Decimal  @db.Decimal(10, 2)
   duracao            Int
 
-
   agendamentos       Agendamento[]
 
   @@map("servicos")
@@ -105,23 +100,19 @@ model Agendamento {
   nome_pet           String   @db.VarChar(100)
   data_hora          DateTime
   status             String   @default("agendado") @db.VarChar(20)
-
-  
   observacoes        String?
-  
+
   cliente            Usuario  @relation(fields: [cliente_id], references: [id], onDelete: Cascade)
   servico            Servico  @relation(fields: [servico_id], references: [id], onDelete: Restrict)
 
   @@map("agendamentos")
 }
 
-
 model Carrinho {
   id                 Int      @id @default(autoincrement())
-  cliente_id         Int      @unique 
+  cliente_id         Int      @unique
   data_criacao       DateTime @default(now())
   data_atualizacao   DateTime @updatedAt
-
 
   cliente            Usuario  @relation("ClienteCarrinho", fields: [cliente_id], references: [id], onDelete: Cascade)
   itens              ItemCarrinho[]
@@ -130,15 +121,14 @@ model Carrinho {
 }
 
 model ItemCarrinho {
-  id                 Int @id @default(autoincrement())
-  carrinho_id        Int
-  produto_id         Int
-  quantidade         Int
+  id          Int      @id @default(autoincrement())
+  carrinho_id Int
+  produto_id  Int
+  quantidade  Int
 
-
-  carrinho           Carrinho @relation(fields: [carrinho_id], references: [id], onDelete: Cascade)
-  produto            Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
+  carrinho    Carrinho @relation(fields: [carrinho_id], references: [id], onDelete: Cascade)
+  produto     Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
 
   @@map("itens_carrinho")
-  @@unique([carrinho_id, produto_id]) 
+  @@unique([carrinho_id, produto_id])
 }

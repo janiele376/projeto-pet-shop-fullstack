@@ -19,7 +19,7 @@ import LoginCadastro from './pages/LoginCadastro/LoginCadastro';
 import CadastroProduto from './pages/Produtos/CadastroProduto';
 import EditarProduto from './pages/Produtos/EditarProduto.jsx';
 import PerfilPage from './pages/Perfil/PerfilPage';
-import ProtectedRoute from './pages/Login/ProtectedRoute'; 
+import ProtectedRoute from './pages/Login/ProtectedRoute';
 
 // IMPORTAÇÕES GLOBAIS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -58,7 +58,7 @@ function App() {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/historia" element={<Historia />} />
         <Route path="/buscar" element={<Buscar />} />
-        
+
         {/* Deixar agendamento e carrinho acessíveis para todos */}
         <Route path="/agendamento" element={<Agendamento />} />
         <Route path="/carrinho" element={<Carrinho />} />
