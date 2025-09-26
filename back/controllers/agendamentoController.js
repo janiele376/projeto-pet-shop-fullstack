@@ -4,9 +4,11 @@ import asyncHandler from 'express-async-handler';
 const prisma = new PrismaClient();
 
 // =========================================================
-// FUNÇÃO AUXILIAR: Garantir que o ID do JWT seja um número inteiro
+// FUNÇÃO AUXILIAR: Garante que o ID do token é lido e é um número
 // =========================================================
 const getUserId = (req) => {
+    // 🔑 Garante que o ID vem do nome anexado pelo middleware (req.usuarioId)
+    // E tenta converter para inteiro, retornando NaN se falhar.
     return parseInt(req.usuarioId);
 };
 
@@ -15,11 +17,12 @@ const getUserId = (req) => {
 // =========================================================
 export const createAppointment = asyncHandler(async (req, res) => {
     
-    // 1. TRATAMENTO DO ID DO USUÁRIO
+    // 1. TRATAMENTO DO ID DO USUÁRIO (Cliente)
     const clienteId = getUserId(req);
 
     if (isNaN(clienteId) || clienteId <= 0) {
         res.status(401);
+        // Agora, este erro só será disparado se o middleware falhar ao anexar o ID.
         throw new Error("Acesso negado. ID do usuário inválido ou ausente.");
     }
     
@@ -29,9 +32,8 @@ export const createAppointment = asyncHandler(async (req, res) => {
         data, 
         hora, 
         servicos, 
-        nomeDono,          // 🛑 Capturado do req.body (do seu frontend)
-        telefoneContato,   // 🛑 Capturado do req.body (do seu frontend)
-        observacoes,       // 🛑 Capturado do req.body (do seu frontend)
+        observacoes, 
+        // Você optou por não usar nomeDono e telefoneContato no Agendamento do Prisma (correto, pois vem do Cliente_id)
     } = req.body;
 
     // 3. VALIDAÇÃO ESSENCIAL (Campos mínimos)
@@ -41,7 +43,6 @@ export const createAppointment = asyncHandler(async (req, res) => {
     }
     
     // 4. TRATAMENTO DE DATA/HORA
-    // Cria um objeto Date para o campo data_hora do Prisma
     const dataHoraAgendamento = new Date(`${data}T${hora}:00`);
     
     // --- Lógica para o SERVIÇO ---
@@ -73,13 +74,12 @@ export const createAppointment = asyncHandler(async (req, res) => {
     // 6. CRIAÇÃO DO AGENDAMENTO NO BANCO DE DADOS
     const appointment = await prisma.agendamento.create({
         data: {
+            // 🔑 USANDO O ID DO CLIENTE OBTIDO DO TOKEN
             cliente_id: clienteId, 
             servico_id: servico.id,
             nome_pet: nomePet,
             data_hora: dataHoraAgendamento,
-            observacoes: observacoes, // Salva as observações
-            // nome_dono: nomeDono, // Mapeie se estes campos existirem no seu modelo Agendamento
-            // telefone: telefoneContato, // Mapeie se estes campos existirem no seu modelo Agendamento
+            observacoes: observacoes, 
         }
     });
     
@@ -87,20 +87,23 @@ export const createAppointment = asyncHandler(async (req, res) => {
 });
 
 // =========================================================
-// 2. LISTAR AGENDAMENTOS (AGORA MOSTRA TODOS PARA TESTE!)
+// 2. LISTAR AGENDAMENTOS (AGORA FILTRA PELO CLIENTE LOGADO)
 // =========================================================
 export const getAllAppointments = asyncHandler(async (req, res) => {
-    // const clienteId = getUserId(req); // Linha original comentada
-    
-    // 🛑 CORREÇÃO APLICADA AQUI: O filtro está vazio {}
-    // Isso fará o Prisma retornar TODOS os agendamentos, ignorando o usuário logado.
-    const filter = {}; 
+    const clienteId = getUserId(req);
+
+    // 🛑 REVERTENDO O FILTRO: Se não for um Admin/Vendedor (assumindo que o middleware isVendedor
+    // protegeria a rota se a intenção fosse listar TUDO), listamos apenas os agendamentos do cliente.
+    const filter = { cliente_id: clienteId }; 
 
     const appointments = await prisma.agendamento.findMany({
-        where: filter, // Aplica o filtro (agora vazio)
+        where: filter, 
         include: {
             cliente: { select: { id: true, nome: true, email: true } },
             servico: true 
+        },
+        orderBy: {
+            data_hora: 'asc', // Ordena por data/hora crescente
         }
     });
     res.status(200).json(appointments);
@@ -111,7 +114,7 @@ export const getAllAppointments = asyncHandler(async (req, res) => {
 // =========================================================
 export const getAppointmentById = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const clienteId = getUserId(req); // Para verificar a propriedade
+    const clienteId = getUserId(req);
 
     const appointment = await prisma.agendamento.findUnique({
         where: { id: parseInt(id) },
@@ -123,8 +126,9 @@ export const getAppointmentById = asyncHandler(async (req, res) => {
         throw new Error("Agendamento não encontrado.");
     }
     
-    // Regra de Autorização
-    if (appointment.cliente_id !== clienteId) {
+    // Regra de Autorização: Só pode ver o próprio agendamento
+    // 🛑 Adicionei toString() para garantir a comparação, pois tipos diferentes causam erro.
+    if (appointment.cliente_id.toString() !== clienteId.toString()) { 
         res.status(403);
         throw new Error("Acesso negado. Você não tem permissão para visualizar este agendamento.");
     }
@@ -137,15 +141,35 @@ export const getAppointmentById = asyncHandler(async (req, res) => {
 // =========================================================
 export const updateAppointment = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { data_hora, status } = req.body;
+    const clienteId = getUserId(req);
+    const { data_hora, status, nomePet, servicos } = req.body;
     
+    // Primeiro, verifica se o agendamento pertence ao cliente
+    const existingAppointment = await prisma.agendamento.findUnique({
+        where: { id: parseInt(id) }
+    });
+
+    if (!existingAppointment || existingAppointment.cliente_id.toString() !== clienteId.toString()) {
+        res.status(403);
+        throw new Error("Acesso negado ou Agendamento não encontrado.");
+    }
+
+    const updatedData = {
+        data_hora: data_hora ? new Date(data_hora) : undefined,
+        status,
+        nome_pet: nomePet
+    };
+
+    // Lógica opcional para atualizar o serviço (se o frontend enviar)
+    // if (servicos && servicos.length > 0) {
+    //     // Você precisaria de uma lógica mais complexa aqui para buscar/criar o novo servico_id
+    // }
+
     const updatedAppointment = await prisma.agendamento.update({
         where: { id: parseInt(id) },
-        data: {
-            data_hora: data_hora ? new Date(data_hora) : undefined,
-            status
-        }
+        data: updatedData
     });
+    
     res.status(200).json(updatedAppointment);
 });
 
@@ -154,10 +178,21 @@ export const updateAppointment = asyncHandler(async (req, res) => {
 // =========================================================
 export const deleteAppointment = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const clienteId = getUserId(req); // Para verificar a propriedade
+    const clienteId = getUserId(req);
+
+    // 🛑 CORREÇÃO: Busca e verifica a permissão antes de deletar
+    const appointment = await prisma.agendamento.findUnique({
+        where: { id: parseInt(id) }
+    });
+
+    if (!appointment || appointment.cliente_id.toString() !== clienteId.toString()) {
+        res.status(403);
+        throw new Error("Acesso negado. Você só pode deletar seus próprios agendamentos.");
+    }
     
+    // Deleta o agendamento
     await prisma.agendamento.delete({
-        where: { id: parseInt(id), cliente_id: clienteId } // Deleta APENAS se o agendamento pertencer ao cliente
+        where: { id: parseInt(id) }
     });
     
     res.status(204).send(); 
